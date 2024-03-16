@@ -17,7 +17,14 @@ class EventController extends Controller
 
        return  $events;
     }
-
+    public function dayEvents($day){
+        $user_id = auth()->id();
+        $events = Event::where('user_id', $user_id)
+                       ->whereDate('event_date', '=', $day)
+                       ->get();
+    
+        return response()->json($events);
+    }
     /**
      * Store a newly created resource in storage.
      */
