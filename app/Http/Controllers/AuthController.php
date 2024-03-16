@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
@@ -28,8 +27,6 @@ class AuthController extends Controller
     {
         $credentials = request(['email', 'password']);
 
-
-
         if (! $token = auth()->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
@@ -43,14 +40,13 @@ class AuthController extends Controller
     }
 public function register(Request $request)
 {
-    // Валідація даних
+
     $validatedData = $request->validate([
         'name' => 'required|string',
         'email' => 'required|email|unique:users,email',
         'password' => 'required|string|min:6',
     ]);
 
-    // Створення нового користувача
     $user = User::create([
         'name' => $validatedData['name'],
         'email' => $validatedData['email'],
@@ -93,10 +89,7 @@ public function register(Request $request)
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function refresh()
-    {
-        return $this->respondWithToken(auth()->refresh());
-    }
+    
 
     /**
      * Get the token array structure.
@@ -110,7 +103,7 @@ public function register(Request $request)
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60
+
         ]);
     }
 }
