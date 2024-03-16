@@ -14,6 +14,7 @@ Route::group(['middleware' => 'api', 'prefix' => 'auth'], function () {
 
 Route::group (['namespace'=> 'Event','middleware' => 'jwt.auth'],function(){
     Route::get('/events', [EventController::class, 'index']);
+    Route::get('/events/{day}', [EventController::class, 'dayEvents']);
     Route::post('/events', [EventController::class, 'store']);
     Route::delete('/events/{id}', [EventController::class, 'destroy']);
     Route::patch('/events/{id}/status', [EventController::class, 'update']);
